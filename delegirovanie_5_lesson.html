@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .container{
+            width: 492px;
+            box-sizing: border-box;
+            margin: 0 auto;
+        }
+        
+        *,
+        *:after,
+        *:before{
+            box-sizing: border-box;
+        }
+        
+        .name, .price, .amount, .button{
+            width: 120px;
+            height: 20px;
+            padding-left: 5px;
+            font-size: 12px;
+        }
+
+        #table{
+            table-layout: fixed;
+            width: 492px;
+            font-size: 12px;
+           
+        }
+        
+        #table tr th{
+            border: 1px solid black;
+            
+        }
+        
+        #result{
+            font-size: 12px;
+            text-align: right;
+        }
+        
+        .hidden:hover{
+            text-decoration: none;    
+        }
+    </style>
+</head>
+<body>
+   
+    <div class = 'container'>
+       
+        <input class = 'name' type='input' placeholder = 'название'>
+        <input class = 'price' type='input' placeholder = 'цена'>
+        <input class = 'amount' type='input' placeholder = 'количество'>
+        <input class = 'button' type='button' type = 'text' value = 'добавить'>
+
+        <h2>Таблица продуктов:</h2>
+
+        <table id = 'table'>
+            <tr>
+                <th>Название</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Сумма</th>
+                <th>Удалить</th>
+            </tr>
+        </table>
+        <div id="result">
+		    общий итог: <span id="total">0</span>
+	    </div>
+        
+    </div>
+    
+    
+
+    <script>
+    "use strict"
+        
+    let name = document.querySelector('.name');
+    let price = document.querySelector('.price');
+    let amount = document.querySelector('.amount');
+    let button = document.querySelector('.button');
+    let table = document.querySelector('#table');
+    let total = document.querySelector('#total');
+        
+    
+    button.addEventListener('click', function(){
+        let tr = document.createElement('tr');
+        
+
+        
+        for (let i = 0; i <= 4; i++){
+            let th = document.createElement('th');
+            tr.appendChild(th);
+            function input(th){
+                th.addEventListener('dblclick', function func(){
+                    let input = document.createElement('input');
+                    input.value = th.innerHTML;
+                    th.innerHTML = '';
+                    input.style.width = '60px'
+                    th.appendChild(input)
+
+                    input.addEventListener('blur', function(){
+                        th.innerHTML = input.value;
+                        
+                        th.addEventListener('dblclick', func);
+                        
+                    })
+                   
+                    th.removeEventListener('dblclick', func);
+                })
+            }
+            function switchResult(i){
+                switch (i) {
+                    case 0:
+                        th.innerHTML = name.value
+
+                        input(th);
+                        break
+
+                    case 1:
+                        
+                        function memory(){
+                               th.innerHTML = price.value
+                               return th.innerHTML     
+                            }
+                        
+                        memory();
+                        input(th);
+                        break
+
+                    case 2:
+                        function memory2(){
+                            th.innerHTML = amount.value
+                            return th.innerHTML;
+                        }
+                        memory2();
+                        input(th);
+                        break
+
+                    case 3:
+                        let case1 = memory(1);
+                        let case2 = memory2(2);
+                        th.innerHTML = Number(case1) * Number(case2);
+                        total.innerHTML = Number(total.innerHTML) + Number(th.innerHTML);
+                        let save = total.innerHTML;
+                        function switchResult(){
+                            let sum = Number(price.value) * Number(amount.value);
+                            return sum;
+                        }
+                        
+                        break
+
+                    case 4:
+                        let remove = document.createElement('a');
+                        remove.innerHTML = 'Удалить';
+                        remove.href = '';
+                        let a = switchResult(3)
+                        
+                        
+                        remove.addEventListener('click', function(event){
+                            event.preventDefault();
+                            tr.remove();
+                            
+                            total.innerHTML = total.innerHTML - a;
+                        })
+                        remove.classList.add('hidden');
+                        
+                        th.appendChild(remove);
+                        
+                        
+                        break  
+
+                    default:
+                        break
+                }
+            }
+            switchResult(i);
+        }
+        table.appendChild(tr);
+        
+    })
+        
+      
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </script>
+    
+</body>
+</html>
